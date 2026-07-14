@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/gocloudLa/terraform-aws-wrapper-apigateway-rest/compare/v0.1.0...v0.2.0) (2026-07-14)
+
+
+### Features
+
+* **domain:** decouple custom domains from route53 dns_records ([#3](https://github.com/gocloudLa/terraform-aws-wrapper-apigateway-rest/issues/3)) ([343fc13](https://github.com/gocloudLa/terraform-aws-wrapper-apigateway-rest/commit/343fc13cbf389049106a993ae8ddc1e2023689d1))
+
 ## 0.1.0 (2026-07-14)
 
 
