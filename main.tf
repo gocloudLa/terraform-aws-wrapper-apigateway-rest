@@ -16,11 +16,7 @@ module "apigateway_rest" {
   cert_enabled     = try(each.value.cert_enabled, var.apigateway_rest_defaults.cert_enabled, false)
   cert_description = try(each.value.cert_description, var.apigateway_rest_defaults.cert_description, "")
 
-  # dns_records-derived domains (gated by domain_name_enabled) merged with any explicit domain_names.
-  domain_names = merge(
-    try(local.apigateway_rest_domain_names[each.key], {}),
-    try(each.value.domain_names, var.apigateway_rest_defaults.domain_names, {})
-  )
+  domain_names = try(each.value.domain_names, var.apigateway_rest_defaults.domain_names, {})
 
   authorizers = try(each.value.authorizers, var.apigateway_rest_defaults.authorizers, {})
 

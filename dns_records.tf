@@ -7,38 +7,21 @@ locals {
       for dns_record_name, value2 in try(value1.dns_records, {}) :
       "${resource_name}-${dns_record_name}" =>
       {
-        "api_key"         = resource_name
-        "record_name"     = length(dns_record_name) > 0 ? (dns_record_name == "_null_" ? "" : dns_record_name) : "${local.common_name}-${resource_name}"
-        "zone_name"       = value2.zone_name
-        "private_zone"    = try(value2.private_zone, false)
-        "ttl"             = try(value2.ttl, 300)
-        "base_path"       = try(value2.base_path, null)
-        "stage_name"      = try(value2.stage_name, null)
-        "certificate_arn" = try(value2.certificate_arn, null)
+        "api_key"      = resource_name
+        "record_name"  = length(dns_record_name) > 0 ? (dns_record_name == "_null_" ? "" : dns_record_name) : "${local.common_name}-${resource_name}"
+        "zone_name"    = value2.zone_name
+        "private_zone" = try(value2.private_zone, false)
       }
     }
-    if try(value1.domain_name_enabled, var.apigateway_rest_defaults.domain_name_enabled, false) && try(value1.dns_records, null) != null
+    if try(value1.dns_records, null) != null
   ]
   apigateway_rest_dns_records = merge(local.apigateway_rest_dns_records_tmp...)
 
-  # FQDN per dns_records entry: "<record_name>.<zone_name>", or the bare zone for root ("_null_") records
+  # FQDN per dns_records entry: "<record_name>.<zone_name>", or the bare zone for root ("_null_") records.
+  # Must match a key in that API's domain_names map (alias target).
   apigateway_rest_domain_fqdn = {
     for key, value in local.apigateway_rest_dns_records :
     key => length(value.record_name) > 0 ? "${value.record_name}.${value.zone_name}" : value.zone_name
-  }
-
-  # domain_names input for each "module.apigateway_rest[api_key]" call, grouped back by API key
-  apigateway_rest_domain_names = {
-    for api_key, api_value in var.apigateway_rest_parameters :
-    api_key => {
-      for key, value in local.apigateway_rest_dns_records :
-      local.apigateway_rest_domain_fqdn[key] => {
-        base_path       = value.base_path
-        stage_name      = value.stage_name
-        certificate_arn = value.certificate_arn
-      }
-      if value.api_key == api_key
-    }
   }
 }
 
