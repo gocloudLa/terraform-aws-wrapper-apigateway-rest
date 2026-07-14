@@ -7,12 +7,17 @@ module "wrapper_apigateway_rest" {
 
     "rest-00" = {
       # types = ["REGIONAL"] # Default: public REGIONAL endpoint, no VPC Endpoint required
-      domain_name_enabled = true
+      domain_names = {
+        "${local.common_name}-rest-00.${local.zone_public}" = {
+          certificate_arn = data.aws_acm_certificate.this.arn
+          # base_path  = "v1"   # Optional
+          # stage_name = "prod" # Optional: only if a stage already exists for this API
+        }
+      }
       dns_records = {
         "" = {
-          zone_name       = local.zone_public
-          private_zone    = false
-          certificate_arn = data.aws_acm_certificate.this.arn
+          zone_name    = local.zone_public
+          private_zone = false
         }
         # To generate a record in the ROOT of the DNS Zone
         # Use as key _null_
@@ -21,6 +26,7 @@ module "wrapper_apigateway_rest" {
         #   private_zone = false
         # } # This generates for example https://example.com
       }
+      # dns_records = {} # Custom domain without Route53 (external DNS)
       # waf_stage_name           = "lab"
       # waf_allow_default_action = false # Block by default; only requests matching a rule below are allowed
       # waf_rules = [
