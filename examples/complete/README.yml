@@ -1,0 +1,6 @@
+title: "Complete Example"
+description: "This example demonstrates the configuration of a public (REGIONAL) API Gateway REST API using Terraform, published on a custom domain via Route53."
+main_purpose: "The main purpose is to configure a public REST API Gateway with a REGIONAL custom domain backed by a Route53 alias record."
+key_features:
+  - "**Public Regional API**: Configures a REST API reachable through the default public `execute-api` endpoint (`types = [\"REGIONAL\"]`), no VPC Endpoint required."
+  - "**Custom Domain**: Configures a REST API with a custom domain name and its corresponding Route53 alias record."
