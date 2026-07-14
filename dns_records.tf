@@ -17,7 +17,7 @@ locals {
         "certificate_arn" = try(value2.certificate_arn, null)
       }
     }
-    if try(value1.domain_name_enabled, var.apigateway_rest_defaults.domain_name_enabled, false) && lookup(value1, "dns_records", null) != null
+    if try(value1.domain_name_enabled, var.apigateway_rest_defaults.domain_name_enabled, false) && try(value1.dns_records, null) != null
   ]
   apigateway_rest_dns_records = merge(local.apigateway_rest_dns_records_tmp...)
 

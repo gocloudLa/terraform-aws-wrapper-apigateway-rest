@@ -29,7 +29,7 @@ module "apigateway_rest_waf" {
   log_destination_configs      = try([aws_cloudwatch_log_group.apigateway_rest_waf[each.key].arn], [])
   logging_filter               = try(each.value.waf_logging_filter, local.waf_logging_filter_default)
 
-  tags = local.common_tags
+  tags = merge(local.common_tags, try(each.value.tags, var.apigateway_rest_defaults.tags, null))
 }
 
 locals {

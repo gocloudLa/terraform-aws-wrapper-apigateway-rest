@@ -72,39 +72,6 @@ features:
             }
           }
           ```
-  - icon: 🔑
-    title: Authorizers
-    short_description: Attaches Lambda (TOKEN/REQUEST) or Cognito user pool authorizers
-    long_description: |
-      The `authorizers` map creates one `aws_api_gateway_authorizer` per entry, keyed by authorizer name. Reference the resulting authorizer id from whatever module attaches methods to this REST API (e.g. `terraform-aws-wrapper-lambda`'s `authorizer_id` trigger attribute) to protect specific methods.
-    examples:
-      - title: Configuration Code
-        code: |
-          ```hcl
-          authorizers = {
-            "lambda-authorizer" = {
-              type            = "TOKEN"
-              authorizer_uri  = module.wrapper_lambda.lambda_module["ExAuthorizer"].lambda_function_invoke_arn
-              identity_source = "method.request.header.Authorization"
-            }
-          }
-          ```
-  - icon: 📜
-    title: Client Certificate
-    short_description: Creates a client certificate for backend (integration) authentication
-    long_description: |
-      When `cert_enabled = true`, the module creates an `aws_api_gateway_client_certificate` that can be referenced by integrations that require mutual authentication with the backend.
-    examples:
-      - title: Configuration Code
-        code: |
-          ```hcl
-          apigateway_rest_parameters = {
-            "rest-00" = {
-              cert_enabled     = true
-              cert_description = "Client certificate for backend integrations"
-            }
-          }
-          ```
   - icon: 🛡️
     title: Web Application Firewall
     short_description: Creates (or reuses) a WAFv2 WebACL and associates it with the REST API stage
