@@ -1,4 +1,4 @@
-module "wrapper_apigateway" {
+module "wrapper_apigateway_rest" {
   source = "../../"
 
   metadata = local.metadata
